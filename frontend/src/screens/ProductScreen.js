@@ -17,7 +17,7 @@ import Message from "../components/Message";
 //import products from "../products";
 //import axios from "axios";
 const ProductScreen = ({ history, match }) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
   //const product = products.find((p) => p._id === match.params.id);
 
   const dispatch = useDispatch();
