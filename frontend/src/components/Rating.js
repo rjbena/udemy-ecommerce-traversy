@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-const Rating = ({ value, text, color = "#f8e825" }) => {
+const Rating = ({ value = 0, text = "0 reviews", color = "#f8e825" }) => {
   return (
     <div className="rating">
       <span>
@@ -77,7 +77,7 @@ const Rating = ({ value, text, color = "#f8e825" }) => {
 // };
 
 Rating.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
   text: PropTypes.string.isRequired,
   color: PropTypes.string,
 };
