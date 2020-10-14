@@ -9,6 +9,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
     shippingAddress,
+    paymentMethod,
     itemsPrice,
     taxPrice,
     shippingPrice,
@@ -24,16 +25,34 @@ const addOrderItems = asyncHandler(async (req, res) => {
       orderItems,
       user: req.user._id,
       shippingAddress,
+      paymentMethod,
       itemsPrice,
       taxPrice,
       shippingPrice,
       totalPrice,
     });
 
-    const createOrder = await order.save();
+    const createdOrder = await order.save();
 
     res.status(201).json(createdOrder);
   }
 });
 
-export { addOrderItems };
+// @desc Get order by ID
+// @ route Get /api/orders/:id
+// @ access Private
+
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await (await Order.findById(req.params.id)).populate(
+    "user",
+    "name email"
+  );
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
+});
+
+export { addOrderItems, getOrderById };
