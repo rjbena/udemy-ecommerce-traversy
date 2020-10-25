@@ -15,10 +15,12 @@ const getProducts = asyncHandler(async (req, res) => {
         },
       }
     : {};
-  const count = await Product.count({ ...keyword });
-  const products = await Product.find({ ...keyword });
+  const count = await Product.countDocuments({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
 
-  res.json(products);
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc Fetch single product
@@ -121,6 +123,17 @@ export const createProductReview = asyncHandler(async (req, res) => {
 
     await product.save();
     res.status(201).json({ message: "Review added" });
+  } else {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+});
+
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  if (products) {
+    res.json(products);
   } else {
     res.status(404);
     throw new Error("Product not found");

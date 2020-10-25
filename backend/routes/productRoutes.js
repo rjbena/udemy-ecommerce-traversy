@@ -8,16 +8,12 @@ import {
   updateProduct,
   createProduct,
   createProductReview,
+  getTopProducts,
 } from "../controllers/productController.js";
 
-// @desc Fetch all products
-// @route GET /api/products
-// @access Public
 router.route("/").get(getProducts).post(protect, isAdmin, createProduct);
+router.get("/top", getTopProducts);
 
-//@desc Fetch single product
-//@route GET /api/products/:id
-//@access Public
 router
   .route("/:id")
   .get(getProductById)
